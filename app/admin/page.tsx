@@ -34,6 +34,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { BrandSelector } from "@/components/brand-selector";
 import {
   Car,
   Plus,
@@ -594,35 +595,76 @@ function VehicleForm({
     try {
       const { supabase } = await import("@/lib/supabase");
       
-      // Generate unique filename
+      // Validate file
+      if (!file.type.startsWith("image/")) {
+        console.error("❌ File must be an image");
+        alert("Please select an image file");
+        return;
+      }
+
+      if (file.size > 5 * 1024 * 1024) {
+        console.error("❌ File too large (max 5MB)");
+        alert("Image must be less than 5MB");
+        return;
+      }
+
+      // Generate unique filename - preserve extension
       const timestamp = Date.now();
       const randomId = Math.random().toString(36).substring(2, 9);
-      const fileName = `${timestamp}-${randomId}-${file.name}`;
+      const extension = file.name.split(".").pop()?.toLowerCase() || "jpg";
+      const fileName = `${timestamp}-${randomId}.${extension}`;
       
       // Upload to vehicle-images bucket
-      const { data, error } = await supabase.storage
+      const { data: uploadData, error: uploadError } = await supabase.storage
         .from("vehicle-images")
         .upload(fileName, file, {
           cacheControl: "3600",
           upsert: false,
         });
 
-      if (error) {
-        console.error("❌ Error uploading image:", error);
+      if (uploadError) {
+        console.error("❌ Storage upload error:", uploadError);
+        alert(`Upload failed: ${uploadError.message}`);
         return;
       }
 
-      // Get public URL
-      const { data: { publicUrl } } = supabase.storage
+      if (!uploadData) {
+        console.error("❌ No upload data returned");
+        alert("Upload failed: No response from server");
+        return;
+      }
+
+      // Get public URL - the bucket must be public for this to work
+      const { data: publicUrlData } = supabase.storage
         .from("vehicle-images")
         .getPublicUrl(fileName);
 
-      if (publicUrl) {
-        setImages([...images, publicUrl]);
-        console.log("✅ Image uploaded:", publicUrl);
+      const publicUrl = publicUrlData?.publicUrl;
+
+      if (!publicUrl) {
+        console.error("❌ Failed to generate public URL");
+        alert("Failed to generate image URL");
+        return;
+      }
+
+      // Verify the URL is valid
+      if (!publicUrl.startsWith("http")) {
+        console.error("❌ Invalid public URL format:", publicUrl);
+        alert("Invalid URL format from storage");
+        return;
+      }
+
+      // Add the image URL to state
+      setImages([...images, publicUrl]);
+      console.log("✅ Image uploaded successfully:", publicUrl);
+
+      // Reset the input
+      if (e.target) {
+        e.target.value = "";
       }
     } catch (error) {
       console.error("🔥 Error uploading image:", error);
+      alert(`Error: ${error instanceof Error ? error.message : "Unknown error"}`);
     } finally {
       setIsUploadingImage(false);
     }
@@ -866,11 +908,9 @@ function VehicleForm({
         <h3 className="text-sm font-semibold text-gold">🏎️ Vehicle Characteristics</h3>
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="text-sm font-medium">Brand</label>
-            <Input
+            <BrandSelector
               value={formData.brand}
-              onChange={(e) => setFormData({ ...formData, brand: e.target.value })}
-              placeholder="e.g., Mercedes-Benz"
+              onChange={(brand) => setFormData({ ...formData, brand })}
             />
           </div>
           <div>
