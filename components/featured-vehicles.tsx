@@ -1,20 +1,77 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { useStore } from "@/lib/store";
 import { VehicleCard } from "./vehicle-card";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import { supabase } from "@/lib/supabase";
+import type { Vehicle } from "@/lib/data";
 
 export function FeaturedVehicles() {
-  const { vehicles } = useStore();
+  const [vehicles, setVehicles] = useState<Vehicle[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  // Show only available vehicles, prioritize rent listings
-  const featuredVehicles = vehicles
-    .filter((v) => v.status === "available")
-    .slice(0, 6);
+  useEffect(() => {
+    const loadFeaturedVehicles = async () => {
+      try {
+        const { data, error } = await supabase
+          .from("vehicles")
+          .select("*")
+          .eq("status", "available")
+          .order("created_at", { ascending: false })
+          .limit(6);
 
-  if (featuredVehicles.length === 0) return null;
+        if (error) {
+          console.error("❌ Error loading featured vehicles:", error);
+          setVehicles([]);
+          return;
+        }
+
+        if (!data || data.length === 0) {
+          setVehicles([]);
+          return;
+        }
+
+        // Transform Supabase data to Vehicle format
+        const transformedVehicles: Vehicle[] = data.map((v: any) => ({
+          id: v.id,
+          name: v.name,
+          category: v.category || "car",
+          listingType: v.listing_type || "rent",
+          price: parseFloat(v.price) || 0,
+          currency: v.currency || "USD",
+          rentalPeriod: v.price_period || "day",
+          status: v.status || "available",
+          image: v.image || "",
+          images: v.images || [],
+          reviews: v.reviews || [],
+          specs: v.specs || {},
+          description: v.description || "",
+          brand: v.brand || undefined,
+          body_type: v.body_type || undefined,
+          isFeatured: v.is_featured || false,
+          isPinned: v.is_pinned || false,
+          viewCount: v.view_count || 0,
+          inquiries: v.inquiries || 0,
+          seasonalPrice: v.seasonal_price || null,
+          discount: v.discount || 0,
+          discountUntil: v.discount_until || null,
+        }));
+
+        setVehicles(transformedVehicles);
+      } catch (error) {
+        console.error("🔥 Error loading featured vehicles:", error);
+        setVehicles([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadFeaturedVehicles();
+  }, []);
+
+  if (loading || vehicles.length === 0) return null;
 
   return (
     <section className="py-16 md:py-24">
@@ -41,7 +98,7 @@ export function FeaturedVehicles() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {featuredVehicles.map((vehicle) => (
+          {vehicles.map((vehicle) => (
             <VehicleCard key={vehicle.id} vehicle={vehicle} />
           ))}
         </div>
