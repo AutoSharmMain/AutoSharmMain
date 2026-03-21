@@ -19,6 +19,7 @@ export function FeaturedVehicles() {
           .from("vehicles")
           .select("*")
           .eq("status", "available")
+          .eq("is_pinned", true)
           .order("created_at", { ascending: false })
           .limit(6);
 
