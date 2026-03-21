@@ -26,6 +26,7 @@ interface BrandSelectorProps {
 export function BrandSelector({ value, onChange }: BrandSelectorProps) {
   const [brands, setBrands] = useState<Brand[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState("");
 
   useEffect(() => {
@@ -33,20 +34,29 @@ export function BrandSelector({ value, onChange }: BrandSelectorProps) {
     const loadBrands = async () => {
       try {
         const { supabase } = await import("@/lib/supabase");
-        const { data, error } = await supabase
+        const { data, error: fetchError } = await supabase
           .from("car_brands")
           .select("id, name, logo_url, country")
-          .eq("is_active", true)
           .order("display_order", { ascending: true })
           .limit(500);
 
-        if (!error && data) {
-          setBrands(data);
+        if (fetchError) {
+          console.error("❌ Error fetching brands:", fetchError);
+          setError("Failed to load brands");
+          setBrands([]);
+        } else if (!data || data.length === 0) {
+          console.warn("⚠️ No brands found in car_brands table");
+          setError("No brands available");
+          setBrands([]);
         } else {
-          console.error("Error fetching brands:", error);
+          console.log("✅ Brands loaded successfully:", data.length, "brands");
+          setBrands(data);
+          setError(null);
         }
       } catch (error) {
-        console.error("Failed to load brands:", error);
+        console.error("🔥 Failed to load brands:", error);
+        setError("Error loading brands");
+        setBrands([]);
       } finally {
         setLoading(false);
       }
@@ -87,6 +97,8 @@ export function BrandSelector({ value, onChange }: BrandSelectorProps) {
             <SelectItem value="none">None</SelectItem>
             {loading ? (
               <div className="p-2 text-sm text-muted-foreground">Loading brands...</div>
+            ) : error ? (
+              <div className="p-2 text-sm text-red-500">{error}</div>
             ) : filteredBrands.length === 0 ? (
               <div className="p-2 text-sm text-muted-foreground">No brands found</div>
             ) : (

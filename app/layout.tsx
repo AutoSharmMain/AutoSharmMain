@@ -129,6 +129,8 @@ export default function RootLayout({
         <meta name="theme-color" content="#4040F0" />
         <meta name="msapplication-TileColor" content="#4040F0" />
         <link rel="canonical" href="https://autosharm.com" />
+        <link rel="icon" href="/logo.png" type="image/png" />
+        <link rel="favicon" href="/favicon.ico" />
         <link rel="icon" href="/icon.svg" type="image/svg+xml" />
         <link rel="icon" href="/icon-light-32x32.png" type="image/png" media="(prefers-color-scheme: light)" />
         <link rel="icon" href="/icon-dark-32x32.png" type="image/png" media="(prefers-color-scheme: dark)" />
