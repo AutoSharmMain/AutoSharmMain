@@ -114,7 +114,7 @@ const STORAGE_KEYS = {
 };
 
 export function StoreProvider({ children }: { children: ReactNode }) {
-  const [vehicles, setVehicles] = useState<Vehicle[]>(initialVehicles);
+  const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [news, setNews] = useState<NewsItem[]>(initialNews);
   const [inquiries, setInquiries] = useState<CustomerInquiry[]>([]);
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
@@ -134,9 +134,9 @@ export function StoreProvider({ children }: { children: ReactNode }) {
           .order("created_at", { ascending: false });
 
         if (error) {
-          console.error("Error loading vehicles from Supabase:", error);
-          // Fall back to initialVehicles
-          setVehicles(initialVehicles);
+          console.error("❌ Error loading vehicles from Supabase:", error);
+          // Start with empty array, not mock data
+          setVehicles([]);
         } else if (data && data.length > 0) {
           // Transform Supabase data to Vehicle format
           const transformedVehicles: Vehicle[] = data.map((v: any) => ({
@@ -165,11 +165,12 @@ export function StoreProvider({ children }: { children: ReactNode }) {
           );
           setVehicles(transformedVehicles);
         } else {
-          setVehicles(initialVehicles);
+          console.log("ℹ️ No vehicles found in Supabase, starting with empty list");
+          setVehicles([]);
         }
       } catch (error) {
-        console.error("Error in loadVehiclesFromSupabase:", error);
-        setVehicles(initialVehicles);
+        console.error("🔥 Error in loadVehiclesFromSupabase:", error);
+        setVehicles([]);
       }
     };
 
@@ -292,22 +293,22 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       try {
         const vehicleData = {
           name: vehicle.name,
-          category: vehicle.category,
-          listing_type: vehicle.listingType,
+          category: String(vehicle.category || "car").toLowerCase(),
+          listing_type: String(vehicle.listingType || "rent").toLowerCase(),
           price: vehicle.price,
-          currency: vehicle.currency,
-          price_period: vehicle.rentalPeriod,
-          status: vehicle.status,
+          currency: String(vehicle.currency || "USD").toUpperCase(),
+          price_period: String(vehicle.rentalPeriod || "day").toLowerCase(),
+          status: String(vehicle.status || "available").toLowerCase(),
           image: vehicle.image,
-          images: vehicle.images,
-          reviews: vehicle.reviews,
-          specs: vehicle.specs,
+          images: vehicle.images || [],
+          reviews: vehicle.reviews || [],
+          specs: vehicle.specs || {},
           description: vehicle.description,
-          is_featured: vehicle.isFeatured,
+          is_featured: vehicle.isFeatured || false,
           view_count: vehicle.viewCount || 0,
           inquiries: vehicle.inquiries || 0,
           seasonal_price: vehicle.seasonalPrice,
-          discount: vehicle.discount,
+          discount: vehicle.discount || 0,
           discount_until: vehicle.discountUntil,
         };
 
@@ -320,6 +321,12 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         if (error) {
           console.error("❌ Error adding vehicle to Supabase:", error);
           // Remove the temporary vehicle if it failed
+          setVehicles((prev) => prev.filter((v) => v.id !== newVehicle.id));
+          return;
+        }
+
+        if (!data) {
+          console.error("❌ No data returned from Supabase insert");
           setVehicles((prev) => prev.filter((v) => v.id !== newVehicle.id));
           return;
         }

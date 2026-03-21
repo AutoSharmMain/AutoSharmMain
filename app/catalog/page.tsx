@@ -135,10 +135,16 @@ function CatalogContent() {
   // Load vehicles from Supabase
   useEffect(() => {
     loadVehicles();
+    
+    // Set up polling to stay in sync with Supabase (every 3 seconds)
+    const interval = setInterval(() => {
+      loadVehicles();
+    }, 3000);
+
+    return () => clearInterval(interval);
   }, []);
 
   const loadVehicles = async () => {
-    setLoading(true);
     try {
       const { data, error } = await supabase
         .from("vehicles")
@@ -150,7 +156,6 @@ function CatalogContent() {
       if (!data || data.length === 0) {
         console.log("✅ No vehicles found in Supabase");
         setVehicles([]);
-        setLoading(false);
         return;
       }
 
@@ -185,16 +190,12 @@ function CatalogContent() {
       });
 
       console.log(`✅ Loaded ${transformedData.length} vehicles from Supabase`);
-      console.log("📊 Sample vehicle from Supabase:", {
-        raw: data[0],
-        transformed: transformedData[0],
-      });
       setVehicles(transformedData);
     } catch (error) {
       console.error("❌ Error loading vehicles:", error);
       setVehicles([]);
     } finally {
-      setLoading(false);
+      if (loading) setLoading(false);
     }
   };
 
