@@ -86,7 +86,7 @@ export function HeroSearch() {
           </div>
         </div>
 
-        <div className="flex flex-wrap items-center justify-center gap-3 mt-6 pt-6 border-t border-border/50"
+        <div className="flex flex-wrap items-center justify-center gap-3 mt-6 pt-6 border-t border-border/50">
           <button
             onClick={() => {
               setCategory("car");
