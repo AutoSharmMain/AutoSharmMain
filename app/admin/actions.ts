@@ -7,14 +7,16 @@ export interface AuthResult {
   message?: string;
 }
 
-const ADMIN_USERNAME = process.env.ADMIN_USERNAME || "";
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "";
+// Get credentials from Netlify environment variables
+const ADMIN_USERNAME = process.env.NEXT_PUBLIC_ADMIN_USERNAME || "";
+const ADMIN_PASSWORD = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || "";
 
 export async function authenticateAdmin(
   username: string,
   password: string
 ): Promise<AuthResult> {
-  // Validate credentials against environment variables
+  // Validate credentials directly against environment variables
+  // No database lookup - pure environment variable comparison
   if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
     // Set secure session cookie
     const cookieStore = await cookies();
