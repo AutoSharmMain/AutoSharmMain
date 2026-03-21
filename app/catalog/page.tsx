@@ -27,6 +27,9 @@ function CatalogFilters({
   setTypeFilter,
   statusFilter,
   setStatusFilter,
+  brandFilter,
+  setBrandFilter,
+  availableBrands,
   clearFilters,
   hasFilters,
 }: {
@@ -38,6 +41,9 @@ function CatalogFilters({
   setTypeFilter: (v: string) => void;
   statusFilter: string;
   setStatusFilter: (v: string) => void;
+  brandFilter: string;
+  setBrandFilter: (v: string) => void;
+  availableBrands: string[];
   clearFilters: () => void;
   hasFilters: boolean;
 }) {
@@ -100,6 +106,22 @@ function CatalogFilters({
             </SelectContent>
           </Select>
 
+          {availableBrands.length > 0 && (
+            <Select value={brandFilter} onValueChange={setBrandFilter}>
+              <SelectTrigger className="w-full sm:w-[140px] h-11">
+                <SelectValue placeholder="Brand" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Brands</SelectItem>
+                {availableBrands.map((brand) => (
+                  <SelectItem key={brand} value={brand}>
+                    {brand}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          )}
+
           {hasFilters && (
             <Button
               variant="ghost"
@@ -131,6 +153,7 @@ function CatalogContent() {
   const [categoryFilter, setCategoryFilter] = useState(urlCategory);
   const [typeFilter, setTypeFilter] = useState(urlType);
   const [statusFilter, setStatusFilter] = useState("all");
+  const [brandFilter, setBrandFilter] = useState("all");
 
   // Load vehicles from Supabase
   useEffect(() => {
@@ -228,15 +251,28 @@ function CatalogContent() {
     searchQuery !== "" ||
     categoryFilter !== "all" ||
     typeFilter !== "all" ||
-    statusFilter !== "all";
+    statusFilter !== "all" ||
+    brandFilter !== "all";
 
   const clearFilters = () => {
     setSearchQuery("");
     setCategoryFilter("all");
     setTypeFilter("all");
     setStatusFilter("all");
+    setBrandFilter("all");
     router.push("/catalog", { scroll: false });
   };
+
+  // Extract unique brands from vehicles
+  const availableBrands = useMemo(() => {
+    const brands = new Set<string>();
+    vehicles.forEach((vehicle) => {
+      if (vehicle.specs?.brand) {
+        brands.add(vehicle.specs.brand);
+      }
+    });
+    return Array.from(brands).sort();
+  }, [vehicles]);
 
   const filteredVehicles = useMemo(() => {
     return vehicles.filter((vehicle) => {
@@ -287,9 +323,14 @@ function CatalogContent() {
         return false;
       }
 
+      // Brand filter - case insensitive
+      if (brandFilter !== "all" && vehicle.specs?.brand?.toLowerCase() !== brandFilter.toLowerCase()) {
+        return false;
+      }
+
       return true;
     });
-  }, [vehicles, searchQuery, categoryFilter, typeFilter, statusFilter]);
+  }, [vehicles, searchQuery, categoryFilter, typeFilter, statusFilter, brandFilter]);
 
   // Dynamic page title based on filters
   const getPageTitle = () => {
@@ -343,6 +384,9 @@ function CatalogContent() {
             setTypeFilter={handleTypeChange}
             statusFilter={statusFilter}
             setStatusFilter={setStatusFilter}
+            brandFilter={brandFilter}
+            setBrandFilter={setBrandFilter}
+            availableBrands={availableBrands}
             clearFilters={clearFilters}
             hasFilters={hasFilters}
           />

@@ -59,7 +59,7 @@ export function LoginPage({ onLoginSuccess }: LoginPageProps) {
           <div className="flex justify-center">
             <div className="relative w-16 h-16 rounded-xl overflow-hidden bg-gradient-to-br from-gold/30 to-gold/10 p-2 border border-gold/30">
               <Image
-                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logoautosharm-zTR2GiuqqtlDQmiyiSnDy9edrXLJqV.jpeg"
+                src="/logo.png"
                 alt="AutoSharm Logo"
                 fill
                 className="object-contain p-1"

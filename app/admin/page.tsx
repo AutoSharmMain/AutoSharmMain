@@ -203,7 +203,7 @@ function AdminContent({ onLogout }: { onLogout: () => void }) {
             <div className="flex items-center gap-3">
               <div className="relative w-10 h-10 rounded-lg overflow-hidden bg-card">
                 <Image
-                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logoautosharm-zTR2GiuqqtlDQmiyiSnDy9edrXLJqV.jpeg"
+                  src="/logo.png"
                   alt="AutoSharm Logo"
                   fill
                   className="object-contain p-0.5"
@@ -592,14 +592,37 @@ function VehicleForm({
 
     setIsUploadingImage(true);
     try {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const base64 = event.target?.result as string;
-        setImages([...images, base64]);
-      };
-      reader.readAsDataURL(file);
+      const { supabase } = await import("@/lib/supabase");
+      
+      // Generate unique filename
+      const timestamp = Date.now();
+      const randomId = Math.random().toString(36).substring(2, 9);
+      const fileName = `${timestamp}-${randomId}-${file.name}`;
+      
+      // Upload to vehicle-images bucket
+      const { data, error } = await supabase.storage
+        .from("vehicle-images")
+        .upload(fileName, file, {
+          cacheControl: "3600",
+          upsert: false,
+        });
+
+      if (error) {
+        console.error("❌ Error uploading image:", error);
+        return;
+      }
+
+      // Get public URL
+      const { data: { publicUrl } } = supabase.storage
+        .from("vehicle-images")
+        .getPublicUrl(fileName);
+
+      if (publicUrl) {
+        setImages([...images, publicUrl]);
+        console.log("✅ Image uploaded:", publicUrl);
+      }
     } catch (error) {
-      console.error("Error uploading image:", error);
+      console.error("🔥 Error uploading image:", error);
     } finally {
       setIsUploadingImage(false);
     }
@@ -623,13 +646,49 @@ function VehicleForm({
     setImages(newImages);
   };
 
+  const parsePrice = (priceStr: string): number => {
+    if (!priceStr) return 0;
+    // Remove all whitespace
+    let cleaned = priceStr.trim();
+    // Remove currency symbols if present
+    cleaned = cleaned.replace(/[^0-9.,]/g, "");
+    // Handle both European (1.234,56) and US (1,234.56) formats
+    const dotCount = (cleaned.match(/\./g) || []).length;
+    const commaCount = (cleaned.match(/,/g) || []).length;
+    
+    if (dotCount > 0 && commaCount > 0) {
+      const lastDot = cleaned.lastIndexOf(".");
+      const lastComma = cleaned.lastIndexOf(",");
+      if (lastDot > lastComma) {
+        // US format: remove commas, keep dot
+        cleaned = cleaned.replace(/,/g, "");
+      } else {
+        // European format: remove dots, replace comma with dot
+        cleaned = cleaned.replace(/\./g, "").replace(",", ".");
+      }
+    } else if (commaCount > 0) {
+      // Only commas - check if decimal separator
+      const parts = cleaned.split(",");
+      if (parts[1]?.length === 2) {
+        // European: 1234,56 -> 1234.56
+        cleaned = cleaned.replace(",", ".");
+      } else {
+        // US: remove commas (thousands separator)
+        cleaned = cleaned.replace(/,/g, "");
+      }
+    }
+    cleaned = cleaned.replace(/[^0-9.]/g, "");
+    const parsed = parseFloat(cleaned);
+    return isNaN(parsed) ? 0 : parsed;
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSubmit({
       name: formData.name,
       category: formData.category,
       listingType: formData.listingType,
-      price: parseFloat(formData.price) || 0,
+      price: parsePrice(formData.price),
       currency: formData.currency,
       rentalPeriod: formData.listingType === "rent" ? formData.rentalPeriod : undefined,
       status: formData.status,
@@ -649,6 +708,31 @@ function VehicleForm({
         features: vehicle?.specs.features || [],
       },
     });
+
+    // Reset form if adding new vehicle (not editing)
+    if (!vehicle) {
+      setFormData({
+        name: "",
+        category: "car" as VehicleCategory,
+        listingType: "rent" as ListingType,
+        price: "",
+        currency: "USD" as CurrencyType,
+        rentalPeriod: "day" as RentalPeriod,
+        status: "available" as VehicleStatus,
+        description: "",
+        brand: "",
+        type: "",
+        seats: "",
+        gearbox: "Automatic",
+        fuel: "Petrol",
+        mileage: "",
+        engine: "",
+        year: new Date().getFullYear().toString(),
+      });
+      setImages([]);
+      setReviews([]);
+      setShowAddReview(false);
+    }
   };
 
   const addReview = () => {

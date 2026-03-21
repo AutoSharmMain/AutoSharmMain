@@ -26,14 +26,14 @@ export function HeroSearch() {
 
   return (
     <div className="w-full max-w-4xl mx-auto">
-      <div className="bg-card/95 backdrop-blur-sm rounded-2xl shadow-2xl p-4 md:p-6 border border-border">
+      <div className="bg-card/98 shadow-2xl rounded-2xl p-4 md:p-8 border border-gold/20">
         <div className="flex flex-col md:flex-row gap-4">
           <div className="flex-1">
-            <label className="block text-xs font-medium text-muted-foreground mb-2 uppercase tracking-wide">
+            <label className="block text-xs font-medium text-muted-foreground mb-2 uppercase tracking-widest">
               Looking to
             </label>
             <Select value={listingType} onValueChange={setListingType}>
-              <SelectTrigger className="w-full h-12 text-base">
+              <SelectTrigger className="w-full h-13 text-base rounded-lg border-2 border-border hover:border-gold/50 focus:border-gold transition-colors">
                 <SelectValue placeholder="Rent or Buy" />
               </SelectTrigger>
               <SelectContent>
@@ -45,11 +45,11 @@ export function HeroSearch() {
           </div>
 
           <div className="flex-1">
-            <label className="block text-xs font-medium text-muted-foreground mb-2 uppercase tracking-wide">
+            <label className="block text-xs font-medium text-muted-foreground mb-2 uppercase tracking-widest">
               Vehicle Type
             </label>
             <Select value={category} onValueChange={setCategory}>
-              <SelectTrigger className="w-full h-12 text-base">
+              <SelectTrigger className="w-full h-13 text-base rounded-lg border-2 border-border hover:border-gold/50 focus:border-gold transition-colors">
                 <SelectValue placeholder="All Vehicles" />
               </SelectTrigger>
               <SelectContent>
@@ -78,7 +78,7 @@ export function HeroSearch() {
             <Button
               onClick={handleSearch}
               size="lg"
-              className="w-full md:w-auto h-12 px-8 bg-gold text-gold-foreground hover:bg-gold/90 font-semibold"
+              className="w-full md:w-auto h-13 px-8 bg-gold text-gold-foreground hover:bg-gold/90 font-semibold rounded-lg transition-all shadow-lg hover:shadow-xl"
             >
               <Search className="w-5 h-5 mr-2" />
               Search
@@ -86,7 +86,7 @@ export function HeroSearch() {
           </div>
         </div>
 
-        <div className="flex flex-wrap items-center justify-center gap-4 mt-4 pt-4 border-t border-border">
+        <div className="flex flex-wrap items-center justify-center gap-3 mt-6 pt-6 border-t border-border/50"
           <button
             onClick={() => {
               setCategory("car");

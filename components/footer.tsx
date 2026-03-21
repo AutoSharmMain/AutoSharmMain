@@ -11,7 +11,7 @@ export function Footer() {
             <Link href="/" className="flex items-center gap-3 mb-4">
               <div className="relative w-12 h-12 md:w-14 md:h-14 rounded-lg overflow-hidden bg-card flex items-center justify-center border-2 border-gold/30">
                 <Image
-                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logoautosharm-zTR2GiuqqtlDQmiyiSnDy9edrXLJqV.jpeg"
+                  src="/logo.png"
                   alt="AutoSharm Logo"
                   fill
                   className="object-contain"

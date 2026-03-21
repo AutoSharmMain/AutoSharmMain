@@ -62,7 +62,7 @@ export const metadata: Metadata = {
     description: 'Book premium cars for sale, car rentals, and scooters in Sharm El Sheikh, Egypt. Best prices, 24/7 support, fully insured.',
     images: [
       {
-        url: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logoautosharm-zTR2GiuqqtlDQmiyiSnDy9edrXLJqV.jpeg',
+        url: '/logo.png',
         width: 140,
         height: 140,
         alt: 'AutoSharm Logo',
@@ -73,7 +73,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'AutoSharm | Premium Vehicle Rentals & Sales in Sharm El Sheikh',
     description: 'Book premium cars and scooters in Sharm El Sheikh, Egypt. Best prices, 24/7 support, fully insured!',
-    images: ['https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logoautosharm-zTR2GiuqqtlDQmiyiSnDy9edrXLJqV.jpeg'],
+    images: ['/logo.png'],
   },
   alternates: {
     canonical: 'https://autosharm.com',
@@ -110,7 +110,7 @@ export default function RootLayout({
       latitude: '27.9428',
       longitude: '34.3397',
     },
-    image: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logoautosharm-zTR2GiuqqtlDQmiyiSnDy9edrXLJqV.jpeg',
+    image: '/logo.png',
     priceRange: '$$',
     areaServed: 'EG',
     serviceType: ['Car Rental', 'Car Sales', 'Scooter Rental'],
