@@ -76,12 +76,15 @@ export function BrandSelector({ value, onChange }: BrandSelectorProps) {
         </div>
 
         {/* Brand selector dropdown */}
-        <Select value={value} onValueChange={onChange}>
+        <Select 
+          value={value || "none"} 
+          onValueChange={(val) => onChange(val === "none" ? "" : val)}
+        >
           <SelectTrigger className="w-full">
             <SelectValue placeholder="Select a brand" />
           </SelectTrigger>
           <SelectContent className="max-h-48">
-            <SelectItem value="">None</SelectItem>
+            <SelectItem value="none">None</SelectItem>
             {loading ? (
               <div className="p-2 text-sm text-muted-foreground">Loading brands...</div>
             ) : filteredBrands.length === 0 ? (
