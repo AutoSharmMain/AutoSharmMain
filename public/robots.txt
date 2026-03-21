@@ -1,0 +1,31 @@
+# AutoSharm - Robot Configuration for Search Engines
+# Allows all search engines to crawl and index the website
+
+# Allow all robots
+User-agent: *
+Allow: /
+Disallow: /.env
+Disallow: /.next
+Disallow: /node_modules
+Disallow: /admin/login
+
+# Specific rules for major search engines
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Slurp
+Allow: /
+Crawl-delay: 1
+
+User-agent: DuckDuckBot
+Allow: /
+Crawl-delay: 1
+
+# Sitemap location
+Sitemap: https://autosharm.com/sitemap.xml
+Sitemap: https://autosharm.vercel.app/sitemap.xml
