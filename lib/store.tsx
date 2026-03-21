@@ -307,7 +307,10 @@ export function StoreProvider({ children }: { children: ReactNode }) {
           reviews: vehicle.reviews || [],
           specs: vehicle.specs || {},
           description: vehicle.description,
+          brand: vehicle.brand || null,
+          body_type: vehicle.body_type || null,
           is_featured: vehicle.isFeatured || false,
+          is_pinned: vehicle.isPinned || false,
           view_count: vehicle.viewCount || 0,
           inquiries: vehicle.inquiries || 0,
           seasonal_price: vehicle.seasonalPrice,
@@ -349,7 +352,10 @@ export function StoreProvider({ children }: { children: ReactNode }) {
           reviews: data.reviews || [],
           specs: data.specs || {},
           description: data.description || "",
+          brand: data.brand || undefined,
+          body_type: data.body_type || undefined,
           isFeatured: data.is_featured || false,
+          isPinned: data.is_pinned || false,
           viewCount: data.view_count || 0,
           inquiries: data.inquiries || 0,
           seasonalPrice: data.seasonal_price || null,
@@ -390,7 +396,10 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         if (updates.reviews !== undefined) updateData.reviews = updates.reviews;
         if (updates.specs !== undefined) updateData.specs = updates.specs;
         if (updates.description !== undefined) updateData.description = updates.description;
+        if (updates.brand !== undefined) updateData.brand = updates.brand;
+        if (updates.body_type !== undefined) updateData.body_type = updates.body_type;
         if (updates.isFeatured !== undefined) updateData.is_featured = updates.isFeatured;
+        if (updates.isPinned !== undefined) updateData.is_pinned = updates.isPinned;
         if (updates.viewCount !== undefined) updateData.view_count = updates.viewCount;
         if (updates.inquiries !== undefined) updateData.inquiries = updates.inquiries;
         if (updates.seasonalPrice !== undefined) updateData.seasonal_price = updates.seasonalPrice;
