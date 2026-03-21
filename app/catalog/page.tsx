@@ -224,7 +224,10 @@ function CatalogContent() {
           reviews: v.reviews || [],
           specs: v.specs || {},
           description: v.description || "",
+          brand: v.brand || undefined,
+          body_type: v.body_type || undefined,
           isFeatured: v.is_featured || false,
+          isPinned: v.is_pinned || false,
           viewCount: v.view_count || 0,
           inquiries: v.inquiries || 0,
           seasonalPrice: v.seasonal_price || null,
@@ -292,8 +295,8 @@ function CatalogContent() {
   const availableBrands = useMemo(() => {
     const brands = new Set<string>();
     vehicles.forEach((vehicle) => {
-      if (vehicle.specs?.brand) {
-        brands.add(vehicle.specs.brand);
+      if (vehicle.brand) {
+        brands.add(vehicle.brand);
       }
     });
     return Array.from(brands).sort();
@@ -302,8 +305,8 @@ function CatalogContent() {
   const availableBodyTypes = useMemo(() => {
     const types = new Set<string>();
     vehicles.forEach((vehicle) => {
-      if (vehicle.specs?.type) {
-        types.add(vehicle.specs.type);
+      if (vehicle.body_type) {
+        types.add(vehicle.body_type);
       }
     });
     return Array.from(types).sort();
@@ -359,13 +362,13 @@ function CatalogContent() {
       }
 
       // Brand filter - case insensitive
-      if (brandFilter !== "all" && vehicle.specs?.brand?.toLowerCase() !== brandFilter.toLowerCase()) {
+      if (brandFilter !== "all" && vehicle.brand?.toLowerCase() !== brandFilter.toLowerCase()) {
         return false;
       }
 
       // Body type filter - case insensitive
       if (bodyTypeFilter !== "all" && bodyTypeFilter !== "none") {
-        const bodyType = vehicle.specs?.type;
+        const bodyType = vehicle.body_type;
         if (!bodyType || bodyType.toLowerCase() !== bodyTypeFilter.toLowerCase()) {
           return false;
         }

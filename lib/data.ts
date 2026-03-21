@@ -24,6 +24,8 @@ export interface Vehicle {
   image: string;
   images?: string[]; // additional gallery images
   reviews?: VehicleReview[]; // Vehicle-specific reviews (only for rent)
+  brand?: string; // e.g., "Toyota", "BMW" - TOP LEVEL field
+  body_type?: string; // e.g., "Sedan", "SUV" - TOP LEVEL field
   specs: {
     engine: string;
     transmission: string;

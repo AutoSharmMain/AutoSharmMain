@@ -153,6 +153,8 @@ export function StoreProvider({ children }: { children: ReactNode }) {
             reviews: v.reviews || [],
             specs: v.specs || {},
             description: v.description || "",
+            brand: v.brand || undefined,
+            body_type: v.body_type || undefined,
             isFeatured: v.is_featured || false,
             isPinned: v.is_pinned || false,
             viewCount: v.view_count || 0,
