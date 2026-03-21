@@ -38,6 +38,7 @@ export interface Vehicle {
   description: string;
   detailUrl?: string; // Custom listing detail URL
   isFeatured?: boolean; // For featured/promotional tools
+  isPinned?: boolean; // For pinned vehicles on home page
   viewCount?: number; // Analytics tracking
   inquiries?: number; // Number of inquiries received
   seasonalPrice?: number; // Seasonal pricing override

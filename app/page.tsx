@@ -4,6 +4,7 @@ import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { HeroSearch } from "@/components/hero-search";
 import { FeaturedVehicles } from "@/components/featured-vehicles";
+import { PinnedVehicles } from "@/components/pinned-vehicles";
 import { NewsSection } from "@/components/news-section";
 import { StoreProvider } from "@/lib/store";
 import { Car, Shield, Clock } from "lucide-react";
@@ -43,6 +44,9 @@ function HomeContent() {
 
       {/* Featured Vehicles */}
       <FeaturedVehicles />
+
+      {/* Pinned Vehicles */}
+      <PinnedVehicles />
 
       {/* Why Choose Us */}
       <section className="py-16 md:py-24 bg-primary text-primary-foreground">

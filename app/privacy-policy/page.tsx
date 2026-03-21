@@ -447,8 +447,8 @@ export default function PrivacyPolicyPage() {
                       </h3>
                       <Button
                         asChild
-                        variant="outline"
-                        className="w-full border-gold/30 text-gold hover:bg-gold/10"
+                        className="w-full text-white hover:opacity-90"
+                        style={{ backgroundColor: "#25d366" }}
                       >
                         <a href="https://wa.me/201055777826" target="_blank" rel="noopener noreferrer">
                           Chat on WhatsApp

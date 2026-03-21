@@ -367,7 +367,8 @@ function VehicleDetailContent({ vehicleId }: { vehicleId: string }) {
                     <Button
                       asChild
                       size="lg"
-                      className="w-full bg-gold text-gold-foreground hover:bg-gold/90 h-12 text-base font-semibold"
+                      className="w-full text-white hover:opacity-90 h-12 text-base font-semibold"
+                      style={{ backgroundColor: "#25d366" }}
                       disabled={vehicle.status !== "available"}
                     >
                       <a

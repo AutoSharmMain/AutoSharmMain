@@ -15,6 +15,7 @@ CREATE TABLE vehicles (
   reviews JSONB[] DEFAULT ARRAY[]::JSONB[],
   specs JSONB NOT NULL DEFAULT '{}'::JSONB,
   is_featured BOOLEAN DEFAULT FALSE,
+  is_pinned BOOLEAN DEFAULT FALSE,
   view_count INT DEFAULT 0,
   inquiries INT DEFAULT 0,
   seasonal_price DECIMAL(10, 2),
@@ -42,6 +43,8 @@ CREATE INDEX idx_vehicles_category ON vehicles(category);
 CREATE INDEX idx_vehicles_listing_type ON vehicles(listing_type);
 CREATE INDEX idx_vehicles_status ON vehicles(status);
 CREATE INDEX idx_vehicles_is_featured ON vehicles(is_featured);
+CREATE INDEX idx_vehicles_is_pinned ON vehicles(is_pinned);
+CREATE INDEX idx_vehicles_is_pinned_status ON vehicles(is_pinned, status) WHERE is_pinned = TRUE AND status = 'available';
 CREATE INDEX idx_news_date ON news(date DESC);
 
 -- Enable Row Level Security (optional but recommended)

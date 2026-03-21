@@ -34,6 +34,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Checkbox } from "@/components/ui/checkbox";
 import { BrandSelector } from "@/components/brand-selector";
 import {
   Car,
@@ -553,6 +554,7 @@ function VehicleForm({
     mileage: vehicle?.specs.mileage || "",
     engine: vehicle?.specs.engine || "",
     year: vehicle?.specs.year?.toString() || new Date().getFullYear().toString(),
+    isPinned: vehicle?.isPinned || false,
   });
 
   const [reviews, setReviews] = useState<VehicleReview[]>(vehicle?.reviews || []);
@@ -581,6 +583,7 @@ function VehicleForm({
         mileage: vehicle.specs.mileage || "",
         engine: vehicle.specs.engine || "",
         year: vehicle.specs.year?.toString() || new Date().getFullYear().toString(),
+        isPinned: vehicle.isPinned || false,
       });
       setImages(vehicle.images || vehicle.image ? [vehicle.image] : []);
       setReviews(vehicle.reviews || []);
@@ -738,6 +741,7 @@ function VehicleForm({
       image: images[0] || vehicle?.image || "",
       images: images,
       reviews: formData.listingType === "rent" ? reviews : [],
+      isPinned: formData.isPinned,
       specs: {
         engine: formData.engine,
         transmission: formData.gearbox,
@@ -770,6 +774,7 @@ function VehicleForm({
         mileage: "",
         engine: "",
         year: new Date().getFullYear().toString(),
+        isPinned: false,
       });
       setImages([]);
       setReviews([]);
@@ -900,6 +905,20 @@ function VehicleForm({
               <SelectItem value="sold">Sold</SelectItem>
             </SelectContent>
           </Select>
+        </div>
+        <div className="flex items-end gap-3">
+          <div className="flex items-center gap-2">
+            <Checkbox
+              id="isPinned"
+              checked={formData.isPinned}
+              onCheckedChange={(checked) =>
+                setFormData({ ...formData, isPinned: checked === true })
+              }
+            />
+            <label htmlFor="isPinned" className="text-sm font-medium cursor-pointer">
+              📌 Pin on Home Page
+            </label>
+          </div>
         </div>
       </div>
 

@@ -72,7 +72,8 @@ export function Header() {
           <div className="hidden md:flex items-center gap-4">
             <Button
               asChild
-              className="bg-gold text-gold-foreground hover:bg-gold/90"
+              className="text-white hover:opacity-90"
+              style={{ backgroundColor: "#25d366" }}
             >
               <a
                 href="https://wa.me/201055777826"
@@ -117,7 +118,8 @@ export function Header() {
               ))}
               <Button
                 asChild
-                className="bg-gold text-gold-foreground hover:bg-gold/90 w-full"
+                className="w-full text-white hover:opacity-90"
+                style={{ backgroundColor: "#25d366" }}
               >
                 <a
                   href="https://wa.me/201055777826"

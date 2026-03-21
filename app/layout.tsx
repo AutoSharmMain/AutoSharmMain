@@ -126,9 +126,13 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="theme-color" content="#D4AF37" />
-        <meta name="msapplication-TileColor" content="#D4AF37" />
+        <meta name="theme-color" content="#4040F0" />
+        <meta name="msapplication-TileColor" content="#4040F0" />
         <link rel="canonical" href="https://autosharm.com" />
+        <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+        <link rel="icon" href="/icon-light-32x32.png" type="image/png" media="(prefers-color-scheme: light)" />
+        <link rel="icon" href="/icon-dark-32x32.png" type="image/png" media="(prefers-color-scheme: dark)" />
+        <link rel="apple-touch-icon" href="/apple-icon.png" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}

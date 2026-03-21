@@ -119,7 +119,8 @@ export function VehicleCard({ vehicle }: VehicleCardProps) {
       <div className="px-4 pb-4 md:px-5 md:pb-5 -mt-1">
         <Button
           asChild
-          className="w-full bg-gold text-gold-foreground hover:bg-gold/90"
+          className="w-full text-white hover:opacity-90"
+          style={{ backgroundColor: "#25d366" }}
           disabled={vehicle.status !== "available"}
         >
           <a
