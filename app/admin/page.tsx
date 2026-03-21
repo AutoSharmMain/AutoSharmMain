@@ -546,21 +546,25 @@ function VehicleForm({
     rentalPeriod: vehicle?.rentalPeriod || ("day" as RentalPeriod),
     status: vehicle?.status || ("available" as VehicleStatus),
     description: vehicle?.description || "",
-    brand: vehicle?.specs.brand || "",
-    type: vehicle?.specs.type || "",
-    seats: vehicle?.specs.seats || "",
-    gearbox: vehicle?.specs.transmission || "Automatic",
-    fuel: vehicle?.specs.fuel || "Petrol",
-    mileage: vehicle?.specs.mileage || "",
-    engine: vehicle?.specs.engine || "",
-    year: vehicle?.specs.year?.toString() || new Date().getFullYear().toString(),
+    brand: vehicle?.specs?.brand || "",
+    type: vehicle?.specs?.type || "",
+    seats: vehicle?.specs?.seats || "",
+    gearbox: vehicle?.specs?.transmission || "Automatic",
+    fuel: vehicle?.specs?.fuel || "Petrol",
+    mileage: vehicle?.specs?.mileage || "",
+    engine: vehicle?.specs?.engine || "",
+    year: vehicle?.specs?.year?.toString() || new Date().getFullYear().toString(),
     isPinned: vehicle?.isPinned || false,
   });
 
   const [reviews, setReviews] = useState<VehicleReview[]>(vehicle?.reviews || []);
   const [newReview, setNewReview] = useState({ author: "", rating: 5, comment: "" });
   const [showAddReview, setShowAddReview] = useState(false);
-  const [images, setImages] = useState<string[]>(vehicle?.images || vehicle?.image ? [vehicle.image] : []);
+  const [images, setImages] = useState<string[]>(
+    vehicle?.images && vehicle.images.length > 0 
+      ? vehicle.images 
+      : vehicle?.image ? [vehicle.image] : []
+  );
   const [isUploadingImage, setIsUploadingImage] = useState(false);
 
   // Update form data when vehicle prop changes (when editing)
@@ -575,18 +579,21 @@ function VehicleForm({
         rentalPeriod: vehicle.rentalPeriod || ("day" as RentalPeriod),
         status: vehicle.status || ("available" as VehicleStatus),
         description: vehicle.description || "",
-        brand: vehicle.specs.brand || "",
-        type: vehicle.specs.type || "",
-        seats: vehicle.specs.seats || "",
-        gearbox: vehicle.specs.transmission || "Automatic",
-        fuel: vehicle.specs.fuel || "Petrol",
-        mileage: vehicle.specs.mileage || "",
-        engine: vehicle.specs.engine || "",
-        year: vehicle.specs.year?.toString() || new Date().getFullYear().toString(),
+        brand: vehicle?.specs?.brand || "",
+        type: vehicle?.specs?.type || "",
+        seats: vehicle?.specs?.seats || "",
+        gearbox: vehicle?.specs?.transmission || "Automatic",
+        fuel: vehicle?.specs?.fuel || "Petrol",
+        mileage: vehicle?.specs?.mileage || "",
+        engine: vehicle?.specs?.engine || "",
+        year: vehicle?.specs?.year?.toString() || new Date().getFullYear().toString(),
         isPinned: vehicle.isPinned || false,
       });
-      setImages(vehicle.images || vehicle.image ? [vehicle.image] : []);
-      setReviews(vehicle.reviews || []);
+      const imagesToSet = vehicle?.images && vehicle.images.length > 0 
+        ? vehicle.images 
+        : vehicle?.image ? [vehicle.image] : [];
+      setImages(imagesToSet);
+      setReviews(vehicle?.reviews || []);
     }
   }, [vehicle]);
 
@@ -644,7 +651,7 @@ function VehicleForm({
 
       const publicUrl = publicUrlData?.publicUrl;
 
-      if (!publicUrl) {
+      if (!publicUrl || typeof publicUrl !== "string") {
         console.error("❌ Failed to generate public URL");
         alert("Failed to generate image URL");
         return;
@@ -658,7 +665,7 @@ function VehicleForm({
       }
 
       // Add the image URL to state
-      setImages([...images, publicUrl]);
+      setImages((prevImages) => [...prevImages, publicUrl]);
       console.log("✅ Image uploaded successfully:", publicUrl);
 
       // Reset the input
@@ -674,21 +681,27 @@ function VehicleForm({
   };
 
   const removeImage = (index: number) => {
-    setImages(images.filter((_, i) => i !== index));
+    setImages((prev) => prev.filter((_, i) => i !== index));
   };
 
   const moveImageUp = (index: number) => {
     if (index === 0) return;
-    const newImages = [...images];
-    [newImages[index - 1], newImages[index]] = [newImages[index], newImages[index - 1]];
-    setImages(newImages);
+    setImages((prev) => {
+      const newImages = [...prev];
+      if (newImages.length > index) {
+        [newImages[index - 1], newImages[index]] = [newImages[index], newImages[index - 1]];
+      }
+      return newImages;
+    });
   };
 
   const moveImageDown = (index: number) => {
-    if (index === images.length - 1) return;
-    const newImages = [...images];
-    [newImages[index], newImages[index + 1]] = [newImages[index + 1], newImages[index]];
-    setImages(newImages);
+    setImages((prev) => {
+      if (index >= prev.length - 1) return prev;
+      const newImages = [...prev];
+      [newImages[index], newImages[index + 1]] = [newImages[index + 1], newImages[index]];
+      return newImages;
+    });
   };
 
   const parsePrice = (priceStr: string): number => {
@@ -751,7 +764,7 @@ function VehicleForm({
         seats: formData.seats,
         brand: formData.brand,
         type: formData.type,
-        features: vehicle?.specs.features || [],
+        features: vehicle?.specs?.features || [],
       },
     });
 
