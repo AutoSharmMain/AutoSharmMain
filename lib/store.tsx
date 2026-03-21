@@ -154,6 +154,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
             specs: v.specs || {},
             description: v.description || "",
             isFeatured: v.is_featured || false,
+            isPinned: v.is_pinned || false,
             viewCount: v.view_count || 0,
             inquiries: v.inquiries || 0,
             seasonalPrice: v.seasonal_price || null,

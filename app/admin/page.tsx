@@ -547,7 +547,8 @@ function VehicleForm({
     status: vehicle?.status || ("available" as VehicleStatus),
     description: vehicle?.description || "",
     brand: vehicle?.specs?.brand || "",
-    type: vehicle?.specs?.type || "",
+    type: vehicle?.specs?.type || "Sedan",
+    bodyType: vehicle?.specs?.type || "Sedan",
     seats: vehicle?.specs?.seats || "",
     gearbox: vehicle?.specs?.transmission || "Automatic",
     fuel: vehicle?.specs?.fuel || "Petrol",
@@ -580,7 +581,8 @@ function VehicleForm({
         status: vehicle.status || ("available" as VehicleStatus),
         description: vehicle.description || "",
         brand: vehicle?.specs?.brand || "",
-        type: vehicle?.specs?.type || "",
+        type: vehicle?.specs?.type || "Sedan",
+        bodyType: vehicle?.specs?.type || "Sedan",
         seats: vehicle?.specs?.seats || "",
         gearbox: vehicle?.specs?.transmission || "Automatic",
         fuel: vehicle?.specs?.fuel || "Petrol",
@@ -763,7 +765,7 @@ function VehicleForm({
         mileage: formData.mileage,
         seats: formData.seats,
         brand: formData.brand,
-        type: formData.type,
+        type: formData.bodyType,
         features: vehicle?.specs?.features || [],
       },
     });
@@ -780,7 +782,8 @@ function VehicleForm({
         status: "available" as VehicleStatus,
         description: "",
         brand: "",
-        type: "",
+        type: "Sedan",
+        bodyType: "Sedan",
         seats: "",
         gearbox: "Automatic",
         fuel: "Petrol",
@@ -946,12 +949,24 @@ function VehicleForm({
             />
           </div>
           <div>
-            <label className="text-sm font-medium">Type</label>
-            <Input
-              value={formData.type}
-              onChange={(e) => setFormData({ ...formData, type: e.target.value })}
-              placeholder="e.g., Sedan, SUV"
-            />
+            <label className="text-sm font-medium">Body Type</label>
+            <Select
+              value={formData.bodyType}
+              onValueChange={(v) => setFormData({ ...formData, bodyType: v })}
+            >
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="Sedan">Sedan</SelectItem>
+                <SelectItem value="SUV">SUV</SelectItem>
+                <SelectItem value="Convertible">Convertible</SelectItem>
+                <SelectItem value="Coupe">Coupe</SelectItem>
+                <SelectItem value="Hatchback">Hatchback</SelectItem>
+                <SelectItem value="Luxury">Luxury</SelectItem>
+                <SelectItem value="none">Other</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
           <div>
             <label className="text-sm font-medium">Seats</label>

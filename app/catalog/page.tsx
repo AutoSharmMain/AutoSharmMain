@@ -29,7 +29,10 @@ function CatalogFilters({
   setStatusFilter,
   brandFilter,
   setBrandFilter,
+  bodyTypeFilter,
+  setBodyTypeFilter,
   availableBrands,
+  availableBodyTypes,
   clearFilters,
   hasFilters,
 }: {
@@ -43,7 +46,10 @@ function CatalogFilters({
   setStatusFilter: (v: string) => void;
   brandFilter: string;
   setBrandFilter: (v: string) => void;
+  bodyTypeFilter: string;
+  setBodyTypeFilter: (v: string) => void;
   availableBrands: string[];
+  availableBodyTypes: string[];
   clearFilters: () => void;
   hasFilters: boolean;
 }) {
@@ -114,8 +120,24 @@ function CatalogFilters({
               <SelectContent>
                 <SelectItem value="all">All Brands</SelectItem>
                 {availableBrands.map((brand) => (
-                  <SelectItem key={brand} value={brand}>
-                    {brand}
+                  <SelectItem key={brand} value={brand || "none"}>
+                    {brand || "Unspecified"}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          )}
+
+          {availableBodyTypes.length > 0 && (
+            <Select value={bodyTypeFilter} onValueChange={setBodyTypeFilter}>
+              <SelectTrigger className="w-full sm:w-[140px] h-11">
+                <SelectValue placeholder="Body Type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Types</SelectItem>
+                {availableBodyTypes.map((type) => (
+                  <SelectItem key={type} value={type || "none"}>
+                    {type || "Unspecified"}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -154,6 +176,7 @@ function CatalogContent() {
   const [typeFilter, setTypeFilter] = useState(urlType);
   const [statusFilter, setStatusFilter] = useState("all");
   const [brandFilter, setBrandFilter] = useState("all");
+  const [bodyTypeFilter, setBodyTypeFilter] = useState("all");
 
   // Load vehicles from Supabase
   useEffect(() => {
@@ -252,7 +275,8 @@ function CatalogContent() {
     categoryFilter !== "all" ||
     typeFilter !== "all" ||
     statusFilter !== "all" ||
-    brandFilter !== "all";
+    brandFilter !== "all" ||
+    bodyTypeFilter !== "all";
 
   const clearFilters = () => {
     setSearchQuery("");
@@ -260,10 +284,11 @@ function CatalogContent() {
     setTypeFilter("all");
     setStatusFilter("all");
     setBrandFilter("all");
+    setBodyTypeFilter("all");
     router.push("/catalog", { scroll: false });
   };
 
-  // Extract unique brands from vehicles
+  // Extract unique brands and body types from vehicles
   const availableBrands = useMemo(() => {
     const brands = new Set<string>();
     vehicles.forEach((vehicle) => {
@@ -272,6 +297,16 @@ function CatalogContent() {
       }
     });
     return Array.from(brands).sort();
+  }, [vehicles]);
+
+  const availableBodyTypes = useMemo(() => {
+    const types = new Set<string>();
+    vehicles.forEach((vehicle) => {
+      if (vehicle.specs?.type) {
+        types.add(vehicle.specs.type);
+      }
+    });
+    return Array.from(types).sort();
   }, [vehicles]);
 
   const filteredVehicles = useMemo(() => {
@@ -328,9 +363,17 @@ function CatalogContent() {
         return false;
       }
 
+      // Body type filter - case insensitive
+      if (bodyTypeFilter !== "all" && bodyTypeFilter !== "none") {
+        const bodyType = vehicle.specs?.type;
+        if (!bodyType || bodyType.toLowerCase() !== bodyTypeFilter.toLowerCase()) {
+          return false;
+        }
+      }
+
       return true;
     });
-  }, [vehicles, searchQuery, categoryFilter, typeFilter, statusFilter, brandFilter]);
+  }, [vehicles, searchQuery, categoryFilter, typeFilter, statusFilter, brandFilter, bodyTypeFilter]);
 
   // Dynamic page title based on filters
   const getPageTitle = () => {
@@ -386,7 +429,10 @@ function CatalogContent() {
             setStatusFilter={setStatusFilter}
             brandFilter={brandFilter}
             setBrandFilter={setBrandFilter}
+            bodyTypeFilter={bodyTypeFilter}
+            setBodyTypeFilter={setBodyTypeFilter}
             availableBrands={availableBrands}
+            availableBodyTypes={availableBodyTypes}
             clearFilters={clearFilters}
             hasFilters={hasFilters}
           />
