@@ -13,7 +13,7 @@ import {
 
 interface Brand {
   id: number;
-  name: string;
+  name: string | null;
   logo_url: string | null;
   country: string | null;
 }
@@ -98,21 +98,21 @@ export function BrandSelector({ value, onChange }: BrandSelectorProps) {
             {loading ? (
               <div className="p-2 text-sm text-muted-foreground">Loading brands...</div>
             ) : error ? (
-              <div className="p-2 text-sm text-red-500">{error}</div>
+              <div className="p-2 text-sm text-muted-foreground">Unable to load brands at this time</div>
             ) : filteredBrands.length === 0 ? (
               <div className="p-2 text-sm text-muted-foreground">No brands found</div>
             ) : (
               filteredBrands.map((brand) => (
-                <SelectItem key={brand.id} value={brand.name}>
+                <SelectItem key={brand.id} value={brand.name || ""}>
                   <div className="flex items-center gap-2">
                     {brand.logo_url && (
                       <img
                         src={brand.logo_url}
-                        alt={brand.name}
+                        alt={brand.name || "Brand"}
                         className="w-4 h-4 object-contain"
                       />
                     )}
-                    <span>{brand.name}</span>
+                    <span>{brand.name || "Unknown Brand"}</span>
                     {brand.country && (
                       <span className="text-xs text-muted-foreground">({brand.country})</span>
                     )}

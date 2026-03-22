@@ -3,7 +3,6 @@
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { HeroSearch } from "@/components/hero-search";
-import { FeaturedVehicles } from "@/components/featured-vehicles";
 import { PinnedVehicles } from "@/components/pinned-vehicles";
 import { NewsSection } from "@/components/news-section";
 import { StoreProvider } from "@/lib/store";
@@ -41,9 +40,6 @@ function HomeContent() {
           <HeroSearch />
         </div>
       </section>
-
-      {/* Featured Vehicles */}
-      <FeaturedVehicles />
 
       {/* Pinned Vehicles */}
       <PinnedVehicles />

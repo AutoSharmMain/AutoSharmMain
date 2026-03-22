@@ -86,11 +86,14 @@ export function PinnedVehicles() {
               </span>
             </div>
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 text-balance">
-              Pinned on Home
+              Premium Selection
             </h2>
             <p className="text-muted-foreground max-w-2xl">
-              Our top-rated vehicles picked specially for you. Check these premium
-              options first!
+              Discover our handpicked premium vehicles perfect for your Sharm El Sheikh adventure. 
+              Ready to book? <a href="https://wa.me/201055777826?text=Hi%20AutoSharm!%20I'm%20interested%20in%20your%20premium%20vehicle%20selection." 
+              className="text-accent hover:underline font-medium" target="_blank" rel="noopener noreferrer">
+                Contact us on WhatsApp
+              </a> for instant quotes and availability.
             </p>
           </div>
           <Button
