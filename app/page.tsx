@@ -16,7 +16,7 @@ function HomeContent() {
       {/* Hero Section */}
       <section className="relative pt-20 md:pt-28">
         <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          className="absolute inset-0 bg-contain bg-center bg-no-repeat"
           style={{
             backgroundImage: "url('/hero-bg.jpg')",
           }}
@@ -24,7 +24,7 @@ function HomeContent() {
           <div className="absolute inset-0 bg-gradient-to-b from-primary/95 via-primary/85 to-primary/90" />
         </div>
 
-        <div className="relative container mx-auto px-4 md:px-6 py-16 md:py-32 lg:py-40">
+        <div className="relative container mx-auto px-4 md:px-6 py-20 md:py-40 lg:py-48">
           <div className="text-center text-primary-foreground mb-12 md:mb-16">
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6 text-balance leading-tight">
               Premium Vehicles for Your{" "}

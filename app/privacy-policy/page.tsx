@@ -326,13 +326,13 @@ export default function PrivacyPolicyPage() {
 
                     <div className="p-4 bg-slate-900/50 border border-gold/20 rounded-lg">
                       <h3 className="text-lg font-semibold text-gold mb-2">
-                        🌐 Vercel (Hosting Provider)
+                        🌐 Netlify (Hosting Provider)
                       </h3>
                       <p className="text-slate-300 mb-2">
-                        Our website is hosted on Vercel's cloud infrastructure. Vercel may collect technical data (such as IP addresses and browser information) to maintain website security and performance.
+                        Our website is hosted on Netlify's cloud infrastructure. Netlify may collect technical data (such as IP addresses and browser information) to maintain website security and performance.
                       </p>
                       <p className="text-slate-400 text-sm">
-                        Learn more: <a href="https://vercel.com/legal/privacy" target="_blank" rel="noopener noreferrer" className="text-gold hover:underline">Vercel Privacy Policy</a>
+                        Learn more: <a href="https://www.netlify.com/privacy/" target="_blank" rel="noopener noreferrer" className="text-gold hover:underline">Netlify Privacy Policy</a>
                       </p>
                     </div>
 

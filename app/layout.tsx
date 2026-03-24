@@ -140,7 +140,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
         />
       </head>
-      <body className="font-sans antialiased">
+      <body className=\"font-sans antialiased bg-background text-foreground dark:bg-slate-950 dark:text-slate-50\">
         <ThemeProvider
           attribute="class"
           defaultTheme="light"

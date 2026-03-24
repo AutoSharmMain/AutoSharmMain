@@ -3,9 +3,10 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useTheme } from "next-themes";
 
 const navItems = [
   { label: "Home", href: "/" },
@@ -18,6 +19,12 @@ export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleNavClick = (href: string, e: React.MouseEvent) => {
     e.preventDefault();
@@ -26,7 +33,7 @@ export function Header() {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-primary border-b border-primary-foreground/10">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-primary dark:bg-slate-950 border-b border-primary-foreground/10 dark:border-gold/20\">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo Area with Placeholder */}
@@ -70,6 +77,19 @@ export function Header() {
           </nav>
 
           <div className="hidden md:flex items-center gap-4">
+            {mounted && (
+              <button
+                onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                className="p-2 rounded-lg hover:bg-primary-foreground/10 dark:hover:bg-primary-foreground/20 transition-colors text-primary-foreground"
+                aria-label="Toggle theme"
+              >
+                {theme === 'dark' ? (
+                  <Sun className="w-5 h-5" />
+                ) : (
+                  <Moon className="w-5 h-5" />
+                )}
+              </button>
+            )}
             <Button
               asChild
               className="text-white hover:opacity-90"
@@ -101,6 +121,21 @@ export function Header() {
         {/* Mobile Menu */}
         {mobileMenuOpen && (
           <div className="md:hidden py-4 border-t border-primary-foreground/10">
+            <div className="px-4 pb-4 flex items-center gap-4">
+              {mounted && (
+                <button
+                  onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                  className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-primary-foreground/10 dark:hover:bg-primary-foreground/20 transition-colors text-primary-foreground"
+                  aria-label="Toggle theme"
+                >
+                  {theme === 'dark' ? (
+                    <><Sun className="w-4 h-4" /> <span className="text-xs">Light</span></>
+                  ) : (
+                    <><Moon className="w-4 h-4" /> <span className="text-xs">Dark</span></>
+                  )}
+                </button>
+              )}
+            </div>
             <nav className="flex flex-col gap-4">
               {navItems.map((item) => (
                 <a
