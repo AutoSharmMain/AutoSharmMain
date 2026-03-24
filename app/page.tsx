@@ -14,30 +14,33 @@ function HomeContent() {
       <Header />
 
       {/* Hero Section */}
-      <section className="relative pt-20 md:pt-28">
+      <section className="relative w-full pt-20 md:pt-28 overflow-hidden">
         <div
-          className="absolute inset-0 bg-contain bg-center bg-no-repeat"
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
             backgroundImage: "url('/hero-bg.jpg')",
+            backgroundPosition: "center bottom",
           }}
         >
-          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/20 dark:from-black/60 dark:via-black/50 dark:to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/45 via-black/35 to-black/25 dark:from-black/65 dark:via-black/55 dark:to-transparent" />
         </div>
 
-        <div className="relative container mx-auto px-4 md:px-6 py-20 md:py-40 lg:py-48">
-          <div className="text-center text-white dark:text-white mb-12 md:mb-16">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6 text-balance leading-tight">
-              Premium Vehicles for Your{" "}
-              <span className="text-gold">Red Sea Adventure</span>
-            </h1>
-            <p className="text-base sm:text-lg md:text-xl text-white dark:text-white/90 max-w-3xl mx-auto text-pretty leading-relaxed">
-              Explore Sharm El Sheikh in style. Choose from our curated
-              collection of luxury cars and scooters available for
-              rent or purchase.
-            </p>
-          </div>
+        <div className="relative w-full px-4 md:px-6 py-20 md:py-40 lg:py-48">
+          <div className="flex flex-col items-center">
+            <div className="text-center text-white dark:text-white mb-12 md:mb-16 max-w-4xl">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6 text-balance leading-tight">
+                Premium Vehicles for Your{" "}
+                <span className="text-gold">Red Sea Adventure</span>
+              </h1>
+              <p className="text-base sm:text-lg md:text-xl text-white dark:text-white/90 max-w-3xl mx-auto text-pretty leading-relaxed">
+                Explore Sharm El Sheikh in style. Choose from our curated
+                collection of luxury cars and scooters available for
+                rent or purchase.
+              </p>
+            </div>
 
-          <HeroSearch />
+            <HeroSearch />
+          </div>
         </div>
       </section>
 
