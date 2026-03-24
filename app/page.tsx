@@ -21,16 +21,16 @@ function HomeContent() {
             backgroundImage: "url('/hero-bg.jpg')",
           }}
         >
-          <div className="absolute inset-0 bg-gradient-to-b from-primary/95 via-primary/85 to-primary/90" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/20 dark:from-black/60 dark:via-black/50 dark:to-transparent" />
         </div>
 
         <div className="relative container mx-auto px-4 md:px-6 py-20 md:py-40 lg:py-48">
-          <div className="text-center text-primary-foreground mb-12 md:mb-16">
+          <div className="text-center text-white dark:text-white mb-12 md:mb-16">
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6 text-balance leading-tight">
               Premium Vehicles for Your{" "}
               <span className="text-gold">Red Sea Adventure</span>
             </h1>
-            <p className="text-base sm:text-lg md:text-xl text-primary-foreground/80 max-w-3xl mx-auto text-pretty leading-relaxed">
+            <p className="text-base sm:text-lg md:text-xl text-white dark:text-white/90 max-w-3xl mx-auto text-pretty leading-relaxed">
               Explore Sharm El Sheikh in style. Choose from our curated
               collection of luxury cars and scooters available for
               rent or purchase.

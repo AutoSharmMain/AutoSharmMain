@@ -33,7 +33,7 @@ export function Header() {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-primary dark:bg-slate-950 border-b border-primary-foreground/10 dark:border-gold/20\">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-primary dark:bg-slate-950 border-b border-primary-foreground/10 dark:border-slate-800">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo Area with Placeholder */}
@@ -48,7 +48,7 @@ export function Header() {
               />
             </div>
             <div className="flex flex-col">
-              <span className="font-bold text-base md:text-lg leading-tight text-primary-foreground">
+              <span className="font-bold text-base md:text-lg leading-tight text-primary-foreground dark:text-white">
                 AUTO SHARM
               </span>
               <span className="text-[10px] md:text-xs text-gold font-medium tracking-wide">
@@ -68,7 +68,7 @@ export function Header() {
                   pathname === item.href || 
                   (item.href !== "/" && pathname?.startsWith(item.href.split("?")[0]))
                     ? "text-gold"
-                    : "text-primary-foreground/80 hover:text-gold"
+                    : "text-primary-foreground/80 dark:text-white hover:text-gold"
                 }`}
               >
                 {item.label}
@@ -80,7 +80,7 @@ export function Header() {
             {mounted && (
               <button
                 onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-                className="p-2 rounded-lg hover:bg-primary-foreground/10 dark:hover:bg-primary-foreground/20 transition-colors text-primary-foreground"
+                className="p-2 rounded-lg hover:bg-primary-foreground/10 dark:hover:bg-white/10 transition-colors text-primary-foreground dark:text-white"
                 aria-label="Toggle theme"
               >
                 {theme === 'dark' ? (
@@ -120,12 +120,12 @@ export function Header() {
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (
-          <div className="md:hidden py-4 border-t border-primary-foreground/10">
+          <div className="md:hidden py-4 border-t border-primary-foreground/10 dark:border-slate-800">
             <div className="px-4 pb-4 flex items-center gap-4">
               {mounted && (
                 <button
                   onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-                  className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-primary-foreground/10 dark:hover:bg-primary-foreground/20 transition-colors text-primary-foreground"
+                  className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-primary-foreground/10 dark:hover:bg-white/10 transition-colors text-primary-foreground dark:text-white"
                   aria-label="Toggle theme"
                 >
                   {theme === 'dark' ? (
@@ -145,7 +145,7 @@ export function Header() {
                   className={`text-sm font-medium transition-colors ${
                     pathname === item.href
                       ? "text-gold"
-                      : "text-primary-foreground/80 hover:text-gold"
+                      : "text-primary-foreground/80 dark:text-white hover:text-gold"
                   }`}
                 >
                   {item.label}
