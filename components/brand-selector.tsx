@@ -96,14 +96,14 @@ export function BrandSelector({ value, onChange }: BrandSelectorProps) {
           <SelectContent className="max-h-48">
             <SelectItem value="none">None</SelectItem>
             {loading ? (
-              <div className="p-2 text-sm text-muted-foreground">Loading brands...</div>
+              <SelectItem value="loading" disabled>Loading brands...</SelectItem>
             ) : error ? (
-              <div className="p-2 text-sm text-muted-foreground">Unable to load brands at this time</div>
+              <SelectItem value="error" disabled>Unable to load brands</SelectItem>
             ) : filteredBrands.length === 0 ? (
-              <div className="p-2 text-sm text-muted-foreground">No brands found</div>
+              <SelectItem value="empty" disabled>No brands found</SelectItem>
             ) : (
               filteredBrands.map((brand) => (
-                <SelectItem key={brand.id} value={brand.name || ""}>
+                <SelectItem key={brand.id} value={brand.name || "unknown"}>
                   <div className="flex items-center gap-2">
                     {brand.logo_url && (
                       <img
