@@ -48,8 +48,18 @@ function HomeContent() {
       <PinnedVehicles />
 
       {/* Why Choose Us */}
-      <section className="py-16 md:py-24 bg-primary text-primary-foreground">
-        <div className="container mx-auto px-4 md:px-6">
+      <section className="relative py-16 md:py-24 bg-primary text-primary-foreground overflow-hidden">
+        {/* Blurred Background Texture */}
+        <div
+          className="absolute inset-0 opacity-5 blur-3xl"
+          style={{
+            backgroundImage: "url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 1200 800%22><defs><filter id=%22noise%22><feTurbulence type=%22fractalNoise%22 baseFrequency=%220.02%22 numOctaves=%224%22 result=%22noise%22 seed=%221%22 /></filter></defs><rect width=%221200%22 height=%22800%22 fill=%22%23d4af37%22 filter=%22url(%23noise)%22 /></svg>')",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        />
+
+        <div className="relative container mx-auto px-4 md:px-6">
           <div className="text-center mb-12 md:mb-16">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-balance leading-tight">
               Why Choose <span className="text-gold">AutoSharm</span>
@@ -61,43 +71,84 @@ function HomeContent() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-            <div className="bg-gradient-to-br from-gold/15 to-transparent rounded-2xl p-6 md:p-8 border border-gold/20 hover:border-gold/40 transition-all">
-              <div className="w-14 h-14 rounded-xl bg-gold/30 flex items-center justify-center mb-6">
-                <Car className="w-7 h-7 text-gold" />
+            {/* Card 1 - Premium Selection */}
+            <div className="group relative rounded-2xl p-6 md:p-8 border border-gold/30 hover:border-gold/60 transition-all duration-300">
+              {/* Animated Glow Background */}
+              <div
+                className="absolute inset-0 rounded-2xl bg-gradient-to-r from-gold/0 via-gold/15 to-gold/0 premium-card-glow"
+                style={{
+                  backgroundPosition: "0% 50%",
+                }}
+              />
+              {/* Card Content with background */}
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-gold/10 to-transparent" />
+              
+              <div className="relative z-10">
+                <div className="w-14 h-14 rounded-xl bg-gold/30 flex items-center justify-center mb-6 group-hover:bg-gold/40 transition-all">
+                  <Car className="w-7 h-7 text-gold" />
+                </div>
+                <h3 className="text-lg md:text-xl font-semibold mb-3 text-gold">
+                  Premium Selection
+                </h3>
+                <p className="text-sm md:text-base text-primary-foreground/80 leading-relaxed">
+                  From luxury sedans to convenient scooters, our diverse fleet
+                  caters to every preference and budget.
+                </p>
               </div>
-              <h3 className="text-lg md:text-xl font-semibold mb-3 text-gold">
-                Premium Selection
-              </h3>
-              <p className="text-sm md:text-base text-primary-foreground/70 leading-relaxed">
-                From luxury sedans to convenient scooters, our diverse fleet
-                caters to every preference and budget.
-              </p>
             </div>
 
-            <div className="bg-gradient-to-br from-gold/15 to-transparent rounded-2xl p-6 md:p-8 border border-gold/20 hover:border-gold/40 transition-all">
-              <div className="w-14 h-14 rounded-xl bg-gold/30 flex items-center justify-center mb-6">
-                <Shield className="w-7 h-7 text-gold" />
+            {/* Card 2 - Fully Insured */}
+            <div className="group relative rounded-2xl p-6 md:p-8 border border-gold/30 hover:border-gold/60 transition-all duration-300">
+              {/* Animated Glow Background */}
+              <div
+                className="absolute inset-0 rounded-2xl bg-gradient-to-r from-gold/0 via-gold/15 to-gold/0 premium-card-glow"
+                style={{
+                  backgroundPosition: "0% 50%",
+                  animationDelay: "2s",
+                }}
+              />
+              {/* Card Content with background */}
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-gold/10 to-transparent" />
+              
+              <div className="relative z-10">
+                <div className="w-14 h-14 rounded-xl bg-gold/30 flex items-center justify-center mb-6 group-hover:bg-gold/40 transition-all">
+                  <Shield className="w-7 h-7 text-gold" />
+                </div>
+                <h3 className="text-lg md:text-xl font-semibold mb-3 text-gold">
+                  Fully Insured
+                </h3>
+                <p className="text-sm md:text-base text-primary-foreground/80 leading-relaxed">
+                  All our vehicles come with comprehensive insurance coverage for
+                  your complete peace of mind.
+                </p>
               </div>
-              <h3 className="text-lg md:text-xl font-semibold mb-3 text-gold">
-                Fully Insured
-              </h3>
-              <p className="text-primary-foreground/70 leading-relaxed">
-                All our vehicles come with comprehensive insurance coverage for
-                your complete peace of mind.
-              </p>
             </div>
 
-            <div className="bg-primary-foreground/5 rounded-2xl p-8 border border-primary-foreground/10">
-              <div className="w-14 h-14 rounded-xl bg-gold/20 flex items-center justify-center mb-6">
-                <Clock className="w-7 h-7 text-gold" />
+            {/* Card 3 - Flexible Rentals */}
+            <div className="group relative rounded-2xl p-6 md:p-8 border border-gold/30 hover:border-gold/60 transition-all duration-300">
+              {/* Animated Glow Background */}
+              <div
+                className="absolute inset-0 rounded-2xl bg-gradient-to-r from-gold/0 via-gold/15 to-gold/0 premium-card-glow"
+                style={{
+                  backgroundPosition: "0% 50%",
+                  animationDelay: "4s",
+                }}
+              />
+              {/* Card Content with background */}
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-gold/10 to-transparent" />
+              
+              <div className="relative z-10">
+                <div className="w-14 h-14 rounded-xl bg-gold/30 flex items-center justify-center mb-6 group-hover:bg-gold/40 transition-all">
+                  <Clock className="w-7 h-7 text-gold" />
+                </div>
+                <h3 className="text-lg md:text-xl font-semibold mb-3 text-gold">
+                  Flexible Rentals
+                </h3>
+                <p className="text-sm md:text-base text-primary-foreground/80 leading-relaxed">
+                  Daily, weekly, or monthly rentals available with free delivery
+                  to your hotel or airport.
+                </p>
               </div>
-              <h3 className="text-lg md:text-xl font-semibold mb-3 text-gold">
-                Flexible Rentals
-              </h3>
-              <p className="text-sm md:text-base text-primary-foreground/70 leading-relaxed">
-                Daily, weekly, or monthly rentals available with free delivery
-                to your hotel or airport.
-              </p>
             </div>
           </div>
         </div>

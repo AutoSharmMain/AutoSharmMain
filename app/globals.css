@@ -134,3 +134,34 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Premium Card Animations */
+@keyframes goldGlowPulse {
+  0%, 100% {
+    background-position: 0% 50%;
+    opacity: 0.5;
+  }
+  50% {
+    background-position: 100% 50%;
+    opacity: 0.8;
+  }
+}
+
+.premium-card-glow {
+  animation: goldGlowPulse 6s ease-in-out infinite;
+  background-size: 200% 200%;
+}
+
+@keyframes shimmerWave {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.shimmer-animate {
+  animation: shimmerWave 8s linear infinite;
+  background-size: 200% 100%;
+}
