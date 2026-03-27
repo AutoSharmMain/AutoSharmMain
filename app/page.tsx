@@ -4,7 +4,7 @@ import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { HeroSearch } from "@/components/hero-search";
 import { PinnedVehicles } from "@/components/pinned-vehicles";
-import { NewsSection } from "@/components/news-section";
+import { LatestUpdates } from "@/components/latest-updates";
 import { StoreProvider } from "@/lib/store";
 import { Car, Shield, Clock } from "lucide-react";
 
@@ -152,8 +152,8 @@ function HomeContent() {
         </div>
       </section>
 
-      {/* News Section */}
-      <NewsSection />
+      {/* Latest Updates */}
+      <LatestUpdates />
 
       <Footer />
     </div>
