@@ -51,13 +51,19 @@ export function LatestUpdates() {
     fetchNews();
   }, []);
 
+  const sectionClasses = "relative w-full py-16 md:py-24 bg-center bg-cover bg-no-repeat";
+  const sectionStyle = {
+    backgroundImage: "url('/porsche-light.png')",
+    backdropFilter: "blur(8px)",
+  };
+
   if (isLoading) {
     return (
       <section
-        className="relative w-full py-16 md:py-24 bg-[url('/porsche-light.png')] dark:bg-[url('/porsche-dark.png')] bg-center bg-cover bg-no-repeat"
-        style={{ backdropFilter: "blur(8px)" }}
+        className={`${sectionClasses} dark:bg-[url('/porsche-dark.png')]`}
+        style={sectionStyle}
       >
-        <div className="absolute inset-0 bg-white/30 dark:bg-black/60 backdrop-blur-sm" />
+        <div className="absolute inset-0 bg-white/20 dark:bg-black/50 backdrop-blur-sm" />
         <div className="relative mx-auto max-w-7xl px-4">
           <div className="h-4 w-48 bg-slate-200 rounded mb-4 animate-pulse" />
           <div className="h-3 w-96 bg-slate-200 rounded animate-pulse" />
@@ -69,10 +75,10 @@ export function LatestUpdates() {
   if (news.length === 0) {
     return (
       <section
-        className="relative w-full py-16 md:py-24 bg-[url('/porsche-light.png')] dark:bg-[url('/porsche-dark.png')] bg-center bg-cover bg-no-repeat"
-        style={{ backdropFilter: "blur(8px)" }}
+        className={`${sectionClasses} dark:bg-[url('/porsche-dark.png')]`}
+        style={sectionStyle}
       >
-        <div className="absolute inset-0 bg-white/30 dark:bg-black/60 backdrop-blur-sm" />
+        <div className="absolute inset-0 bg-white/20 dark:bg-black/50 backdrop-blur-sm" />
         <div className="relative mx-auto max-w-7xl px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-slate-800 dark:text-white mb-4">
             Latest Updates
@@ -87,10 +93,10 @@ export function LatestUpdates() {
 
   return (
     <section
-      className="relative w-full py-16 md:py-24 bg-[url('/porsche-light.png')] dark:bg-[url('/porsche-dark.png')] bg-center bg-cover bg-no-repeat"
-      style={{ backdropFilter: "blur(8px)" }}
+      className={`${sectionClasses} dark:bg-[url('/porsche-dark.png')]`}
+      style={sectionStyle}
     >
-      <div className="absolute inset-0 bg-white/30 dark:bg-black/60 backdrop-blur-sm" />
+      <div className="absolute inset-0 bg-white/20 dark:bg-black/50 backdrop-blur-sm" />
       <div className="relative mx-auto max-w-7xl px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-slate-800 dark:text-white mb-4">
@@ -128,10 +134,10 @@ export function LatestUpdates() {
                   href={item.readMoreUrl || TEMP_LINK_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-full border border-amber-300/60 bg-amber-200/15 px-4 py-2 text-xs font-medium text-amber-800 transition-all duration-300 hover:bg-amber-300/25 hover:text-amber-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-300 pulse-gold-btn"
+                  className="inline-flex items-center gap-2 rounded-full border border-amber-300/60 bg-amber-100/30 px-4 py-2 text-xs font-bold text-[#F59E0B] transition-transform duration-200 hover:translate-x-1 hover:text-[#F59E0B] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-300 pulse-gold-btn"
                 >
                   Read More
-                  <ArrowRight className="w-4 h-4" />
+                  <ArrowRight className="w-4 h-4 text-[#F59E0B]" />
                 </a>
               </CardContent>
             </Card>
