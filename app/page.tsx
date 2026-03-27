@@ -104,7 +104,6 @@ function HomeContent() {
                 className="absolute inset-0 rounded-2xl bg-gradient-to-r from-gold/0 via-gold/15 to-gold/0 premium-card-glow"
                 style={{
                   backgroundPosition: "0% 50%",
-                  animationDelay: "2s",
                 }}
               />
               {/* Card Content with background */}
@@ -131,7 +130,6 @@ function HomeContent() {
                 className="absolute inset-0 rounded-2xl bg-gradient-to-r from-gold/0 via-gold/15 to-gold/0 premium-card-glow"
                 style={{
                   backgroundPosition: "0% 50%",
-                  animationDelay: "4s",
                 }}
               />
               {/* Card Content with background */}

@@ -179,11 +179,41 @@ export function StoreProvider({ children }: { children: ReactNode }) {
 
     loadVehiclesFromSupabase();
 
+    // Load news from Supabase
+    const loadNewsFromSupabase = async () => {
+      try {
+        const { data, error } = await supabase
+          .from("news")
+          .select("*")
+          .order("date", { ascending: false });
+
+        if (error) {
+          console.error("❌ Error loading news from Supabase:", error);
+          setNews(initialNews); // Fallback to initial news
+        } else if (data && data.length > 0) {
+          const transformedNews: NewsItem[] = data.map((n: any) => ({
+            id: n.id,
+            title: n.title || "",
+            content: n.content || "",
+            date: n.date || new Date().toISOString(),
+            readMoreUrl: n.read_more_url || "",
+          }));
+          console.log(`✅ Loaded ${transformedNews.length} news items from Supabase`);
+          setNews(transformedNews);
+        } else {
+          console.log("ℹ️ No news found in Supabase, using initial data");
+          setNews(initialNews);
+        }
+      } catch (error) {
+        console.error("🔥 Error in loadNewsFromSupabase:", error);
+        setNews(initialNews);
+      }
+    };
+
+    loadNewsFromSupabase();
+
     // Load other data from localStorage
     try {
-      const storedNews = localStorage.getItem(STORAGE_KEYS.NEWS);
-      if (storedNews) setNews(JSON.parse(storedNews));
-
       const storedInquiries = localStorage.getItem(STORAGE_KEYS.INQUIRIES);
       if (storedInquiries) setInquiries(JSON.parse(storedInquiries));
 
@@ -209,16 +239,6 @@ export function StoreProvider({ children }: { children: ReactNode }) {
 
   // Remove the localStorage save effect for vehicles - Supabase is source of truth
   // (Keeping other localStorage effects for non-vehicle data)
-
-  useEffect(() => {
-    if (isHydrated) {
-      try {
-        localStorage.setItem(STORAGE_KEYS.NEWS, JSON.stringify(news));
-      } catch (error) {
-        console.error("Error saving news to localStorage:", error);
-      }
-    }
-  }, [news, isHydrated]);
 
   useEffect(() => {
     if (isHydrated) {
@@ -462,23 +482,113 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     updateVehicle(id, { viewCount: count });
   };
 
-  // News management
+  // News management - Supabase as source of truth
   const addNews = (newsItem: Omit<NewsItem, "id">) => {
     const newNews: NewsItem = {
       ...newsItem,
-      id: Date.now().toString(),
+      id: `temp_${Date.now()}`,
     };
     setNews((prev) => [newNews, ...prev]);
+
+    // Save to Supabase in background
+    (async () => {
+      try {
+        const newsData = {
+          title: newsItem.title,
+          content: newsItem.content,
+          date: newsItem.date,
+          read_more_url: newsItem.readMoreUrl || null,
+        };
+
+        const { data, error } = await supabase
+          .from("news")
+          .insert([newsData])
+          .select()
+          .single();
+
+        if (error) {
+          console.error("❌ Error adding news to Supabase:", error);
+          setNews((prev) => prev.filter((n) => n.id !== newNews.id));
+          return;
+        }
+
+        if (!data) {
+          console.error("❌ No data returned from Supabase insert");
+          setNews((prev) => prev.filter((n) => n.id !== newNews.id));
+          return;
+        }
+
+        // Replace temporary news with real one from Supabase
+        const savedNews: NewsItem = {
+          id: data.id,
+          title: data.title || "",
+          content: data.content || "",
+          date: data.date || new Date().toISOString(),
+          readMoreUrl: data.read_more_url || "",
+        };
+
+        setNews((prev) =>
+          prev.map((n) => (n.id === newNews.id ? savedNews : n))
+        );
+        console.log("✅ News added to Supabase successfully");
+      } catch (error) {
+        console.error("🔥 Error in addNews:", error);
+        setNews((prev) => prev.filter((n) => n.id !== newNews.id));
+      }
+    })();
   };
 
   const updateNews = (id: string, updates: Partial<NewsItem>) => {
     setNews((prev) =>
       prev.map((n) => (n.id === id ? { ...n, ...updates } : n))
     );
+
+    // Update in Supabase in background
+    (async () => {
+      try {
+        const updateData: any = {};
+        if (updates.title !== undefined) updateData.title = updates.title;
+        if (updates.content !== undefined) updateData.content = updates.content;
+        if (updates.date !== undefined) updateData.date = updates.date;
+        if (updates.readMoreUrl !== undefined) {
+          updateData.read_more_url = updates.readMoreUrl;
+        }
+
+        const { error } = await supabase
+          .from("news")
+          .update(updateData)
+          .eq("id", id);
+
+        if (error) {
+          console.error("❌ Error updating news in Supabase:", error);
+          return;
+        }
+
+        console.log("✅ News updated in Supabase successfully");
+      } catch (error) {
+        console.error("🔥 Error in updateNews:", error);
+      }
+    })();
   };
 
   const deleteNews = (id: string) => {
     setNews((prev) => prev.filter((n) => n.id !== id));
+
+    // Delete from Supabase in background
+    (async () => {
+      try {
+        const { error } = await supabase.from("news").delete().eq("id", id);
+
+        if (error) {
+          console.error("❌ Error deleting news from Supabase:", error);
+          return;
+        }
+
+        console.log("✅ News deleted from Supabase successfully");
+      } catch (error) {
+        console.error("🔥 Error in deleteNews:", error);
+      }
+    })();
   };
 
   // Customer Inquiry management
