@@ -426,3 +426,6 @@ export default function VehicleDetailPage({ params }: { params: Promise<{ id: st
   );
 }
 export const dynamicParams = true; //
+export async function generateStaticParams() {
+  return [{ id: [] }]; 
+}
