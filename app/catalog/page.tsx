@@ -86,6 +86,16 @@ function CatalogFilters({
                   <Bike className="w-4 h-4" /> Bikes & Scooters
                 </div>
               </SelectItem>
+              <SelectItem value="motorcycle">
+                <div className="flex items-center gap-2">
+                  <Bike className="w-4 h-4" /> Motorcycle
+                </div>
+              </SelectItem>
+              <SelectItem value="scooter">
+                <div className="flex items-center gap-2">
+                  <Bike className="w-4 h-4" /> Scooter
+                </div>
+              </SelectItem>
             </SelectContent>
           </Select>
 
@@ -165,10 +175,14 @@ function CatalogContent() {
   const router = useRouter();
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [loading, setLoading] = useState(true);
+  const [fetchError, setFetchError] = useState<string | null>(null);
 
-  // Get filters from URL params
-  const urlCategory = searchParams.get("category") || "all";
-  const urlType = searchParams.get("type") || "all";
+  // Get filters from URL params and normalize values
+  const normalizeUrlParam = (value: string | null, fallback: string) =>
+    value ? value.toLowerCase().trim() : fallback;
+
+  const urlCategory = normalizeUrlParam(searchParams.get("category"), "all");
+  const urlType = normalizeUrlParam(searchParams.get("type"), "all");
 
   // Initialize filters from URL params
   const [searchQuery, setSearchQuery] = useState("");
@@ -193,11 +207,15 @@ function CatalogContent() {
   const loadVehicles = async () => {
     try {
       const { data, error } = await supabase
-        .from("vehicles")
-        .select("*")
-        .order("created_at", { ascending: false });
+  .from('vehicles')
+  .select('*');
 
-      if (error) throw error;
+      if (error) {
+        console.error("❌ Supabase vehicle fetch error:", error);
+        setFetchError(error.message || JSON.stringify(error));
+        setVehicles([]);
+        return;
+      }
 
       if (!data || data.length === 0) {
         console.log("✅ No vehicles found in Supabase");
@@ -205,43 +223,77 @@ function CatalogContent() {
         return;
       }
 
+      const normalizeCategory = (value: string) => {
+        const normalized = value.toLowerCase().trim();
+        if (normalized === "cars" || normalized === "car") return "car";
+        if (normalized === "motorcycles" || normalized === "motorcycle" || normalized === "bikes" || normalized === "bike") return "motorcycle";
+        if (normalized === "scooters" || normalized === "scooter") return "scooter";
+        return "car";
+      };
+
+      const normalizeListingType = (value: string) => {
+        const normalized = value.toLowerCase().trim();
+        if (normalized === "sale" || normalized === "sell") return "sale";
+        return "rent";
+      };
+
+      const normalizeStatus = (value: string) => {
+        const normalized = value.toLowerCase().trim();
+        if (normalized === "rented" || normalized === "reserved") return "rented";
+        if (normalized === "sold") return "sold";
+        return "available";
+      };
+
       const transformedData = data.map((v: any): Vehicle => {
-        // Normalize all values to lowercase for consistent filtering
-        const category = String(v.category || "car").toLowerCase().trim();
-        const listingType = String(v.listing_type || "rent").toLowerCase().trim();
-        
+        const category = normalizeCategory(String(v.category || "car"));
+        const listingType = normalizeListingType(String(v.listing_type || v.listingType || "rent"));
+        const status = normalizeStatus(String(v.status || "available"));
+        const image = Array.isArray(v.image) ? String(v.image[0] || "") : String(v.image || "");
+
         const vehicle: Vehicle = {
           id: v.id,
-          name: v.name,
+          name: String(v.name || "Untitled Vehicle"),
           category: category as any,
           listingType: listingType as any,
           price: parseFloat(v.price) || 0,
           currency: (String(v.currency || "USD").toUpperCase() || "USD") as any,
           rentalPeriod: (String(v.price_period || "day").toLowerCase().trim() || "day") as any,
-          status: (String(v.status || "available").toLowerCase().trim() || "available") as any,
-          image: v.image || "",
+          status: status as any,
+          image,
           images: v.images || [],
           reviews: v.reviews || [],
           specs: v.specs || {},
-          description: v.description || "",
-          brand: v.brand || undefined,
-          body_type: v.body_type || undefined,
-          isFeatured: v.is_featured || false,
-          isPinned: v.is_pinned || false,
-          viewCount: v.view_count || 0,
-          inquiries: v.inquiries || 0,
-          seasonalPrice: v.seasonal_price || null,
-          discount: v.discount || 0,
+          description: String(v.description || ""),
+          brand: v.brand ? String(v.brand).trim() : undefined,
+          body_type: v.body_type ? String(v.body_type).trim() : undefined,
+          isFeatured: Boolean(v.is_featured),
+          isPinned: Boolean(v.is_pinned),
+          viewCount: Number(v.view_count) || 0,
+          inquiries: Number(v.inquiries) || 0,
+          seasonalPrice: v.seasonal_price ?? null,
+          discount: Number(v.discount) || 0,
           discountUntil: v.discount_until || null,
         };
-        
+
         return vehicle;
       });
 
-      console.log(`✅ Loaded ${transformedData.length} vehicles from Supabase`);
+      if (transformedData.length > 0) {
+        console.log("📊 Sample vehicle from Supabase:", {
+          raw: data[0],
+          transformed: transformedData[0],
+        });
+      }
+
+      console.log(`✅ Loaded ${transformedData.length} vehicles from Supabase`, {
+        category: urlCategory,
+        type: urlType,
+      });
+      setFetchError(null);
       setVehicles(transformedData);
     } catch (error) {
       console.error("❌ Error loading vehicles:", error);
+      setFetchError(error instanceof Error ? error.message : JSON.stringify(error));
       setVehicles([]);
     } finally {
       if (loading) setLoading(false);
@@ -341,7 +393,14 @@ function CatalogContent() {
       // Special handling for "bikes" category = motorcycle OR scooter
       if (normCategoryFilter !== "all") {
         if (normCategoryFilter === "bikes") {
-          if (vehicle.category !== "motorcycle" && vehicle.category !== "scooter") {
+          if (
+            vehicle.category !== "motorcycle" &&
+            vehicle.category !== "scooter"
+          ) {
+            return false;
+          }
+        } else if (normCategoryFilter === "motorcycle" || normCategoryFilter === "scooter") {
+          if (vehicle.category !== normCategoryFilter) {
             return false;
           }
         } else {
@@ -439,6 +498,11 @@ function CatalogContent() {
             clearFilters={clearFilters}
             hasFilters={hasFilters}
           />
+          {fetchError && (
+            <div className="mb-6 rounded-xl border border-destructive/20 bg-destructive/5 p-4 text-sm text-destructive">
+              <strong>Unable to load vehicles:</strong> {fetchError}
+            </div>
+          )}
 
           {/* Bikes & Scooters - Rent/Sale Quick Toggle */}
           {categoryFilter === "bikes" && (

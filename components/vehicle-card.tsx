@@ -38,13 +38,19 @@ export function VehicleCard({ vehicle }: VehicleCardProps) {
         className="block"
       >
         <div className="relative aspect-[4/3] overflow-hidden bg-muted">
-          <Image
-            src={vehicle.image}
-            alt={vehicle.name}
-            fill
-            className="object-cover group-hover:scale-105 transition-transform duration-500"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          />
+          {vehicle.image ? (
+            <Image
+              src={vehicle.image}
+              alt={vehicle.name}
+              fill
+              className="object-cover group-hover:scale-105 transition-transform duration-500"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            />
+          ) : (
+            <div className="absolute inset-0 flex items-center justify-center bg-muted/80 text-muted-foreground">
+              No image available
+            </div>
+          )}
           <div className="absolute top-3 left-3 flex gap-2">
             <Badge
               variant="secondary"

@@ -131,7 +131,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         const { data, error } = await supabase
           .from("vehicles")
           .select("*")
-          .order("created_at", { ascending: false });
+        
 
         if (error) {
           console.error("❌ Error loading vehicles from Supabase:", error);
@@ -185,7 +185,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         const { data, error } = await supabase
           .from("news")
           .select("*")
-          .order("date", { ascending: false });
+          
 
         if (error) {
           console.error("❌ Error loading news from Supabase:", error);

@@ -5,7 +5,7 @@
   
   <!-- Home Page - High Priority -->
   <url>
-    <loc>https://autosharm.com</loc>
+    <loc>https://autosharmeg.com</loc>
     <lastmod>2026-03-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
@@ -13,7 +13,7 @@
 
   <!-- Catalog - Cars for Sale -->
   <url>
-    <loc>https://autosharm.com/catalog?type=sale&category=car</loc>
+    <loc>https://autosharmeg.com/catalog?type=sale&category=car</loc>
     <lastmod>2026-03-18</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
@@ -21,7 +21,7 @@
 
   <!-- Catalog - Cars for Rent -->
   <url>
-    <loc>https://autosharm.com/catalog?type=rent&category=car</loc>
+    <loc>https://autosharmeg.com/catalog?type=rent&category=car</loc>
     <lastmod>2026-03-18</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
@@ -29,7 +29,7 @@
 
   <!-- Catalog - Scooters for Rent -->
   <url>
-    <loc>https://autosharm.com/catalog?type=rent&category=scooter</loc>
+    <loc>https://autosharmeg.com/catalog?type=rent&category=scooter</loc>
     <lastmod>2026-03-18</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
@@ -37,7 +37,7 @@
 
   <!-- Privacy Policy -->
   <url>
-    <loc>https://autosharm.com/privacy-policy</loc>
+    <loc>https://autosharmeg.com/privacy-policy</loc>
     <lastmod>2026-03-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -45,7 +45,7 @@
 
   <!-- Admin Panel (Not indexed) -->
   <url>
-    <loc>https://autosharm.com/admin</loc>
+    <loc>https://autosharmeg.com/admin</loc>
     <lastmod>2026-03-18</lastmod>
     <changefreq>never</changefreq>
     <priority>0.0</priority>
