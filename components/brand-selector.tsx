@@ -66,7 +66,7 @@ export function BrandSelector({ value, onChange }: BrandSelectorProps) {
   }, []);
 
   const filteredBrands = brands.filter((brand) =>
-    brand.name.toLowerCase().includes(search.toLowerCase())
+    brand.name?.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
