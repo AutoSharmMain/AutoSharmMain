@@ -425,16 +425,4 @@ export default function VehicleDetailPage({ params }: { params: Promise<{ id: st
     </StoreProvider>
   );
 }
-import { supabase } from '@/lib/supabase' // проверь правильность пути к клиенту supabase, если он другой
-
-export async function generateStaticParams() {
-  const { data: vehicles } = await supabase
-    .from('vehicles') // проверь, чтобы имя таблицы точно совпадало (обычно 'vehicles')
-    .select('id')
-
-  if (!vehicles) return []
-
-  return vehicles.map((vehicle) => ({
-    id: vehicle.id.toString(),
-  }))
-}
+export const dynamicParams = true; //
