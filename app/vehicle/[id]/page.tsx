@@ -13,5 +13,5 @@ interface PageProps {
 
 export default async function Page({ params }: PageProps) {
   const resolvedParams = await params;
-  return <VehicleClient params={Promise.resolve(resolvedParams)} />;
+  return <VehicleClient params={resolvedParams} />;
 }
