@@ -17,7 +17,7 @@
   --secondary-foreground: oklch(0.25 0.08 240);  /* Dark text on secondary */
   --muted: oklch(0.92 0.008 240);                /* Light gray */
   --muted-foreground: oklch(0.5 0.03 240);       /* Medium gray text */
-  --accent: oklch(0.75 0.15 85);                 /* Gold accent */
+  --accent: oklch(54.047% 0.18817 258.121);                 /* Gold accent */
   --accent-foreground: oklch(0.25 0.08 240);     /* Dark text on gold */
   --destructive: oklch(0.577 0.245 27.325);      /* Red for destructive */
   --destructive-foreground: oklch(0.98 0.005 230);
@@ -25,7 +25,7 @@
   --input: oklch(0.96 0.01 230);                 /* Light input background */
   --ring: oklch(0.25 0.12 240);                  /* Blue ring for focus */
   --chart-1: oklch(0.25 0.12 240);               /* Dark blue */
-  --chart-2: oklch(0.75 0.15 85);                /* Gold */
+  --chart-2: oklch(47.163% 0.20562 264.457);                /* Gold */
   --chart-3: oklch(0.55 0.1 240);                /* Medium blue */
   --chart-4: oklch(0.65 0.12 85);                /* Light gold */
   --chart-5: oklch(0.45 0.08 240);               /* Lighter blue */
@@ -57,7 +57,7 @@
   --secondary-foreground: oklch(0.95 0.01 230);
   --muted: oklch(0.25 0.06 240);
   --muted-foreground: oklch(0.65 0.03 230);
-  --accent: oklch(0.75 0.15 85);
+  --accent: oklch(93.403% 0.00011 271.152 / 0.788);
   --accent-foreground: oklch(0.1 0.02 240);
   --destructive: oklch(0.396 0.141 25.723);
   --destructive-foreground: oklch(0.637 0.237 25.331);
@@ -65,7 +65,7 @@
   --input: oklch(0.15 0.03 240);
   --ring: oklch(0.75 0.15 85);
   --chart-1: oklch(0.55 0.12 240);
-  --chart-2: oklch(0.75 0.15 85);
+  --chart-2: oklch(88.837% 0.0001 271.152 / 0.795);
   --chart-3: oklch(0.65 0.1 240);
   --chart-4: oklch(0.8 0.12 85);
   --chart-5: oklch(0.45 0.08 240);
